@@ -81,7 +81,8 @@ function render() {
 function heroHTML() {
   if (!document.body.dataset.theme) return '';
   const d = new Date(), wd = '일월화수목금토'[d.getDay()];
-  return `<div class="hero"><div class="hero-name">차준영</div><div class="hero-sub">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${wd}요일 · 앱 ${BASE.length}개</div></div>`;
+  return `<div class="hero"><div class="hero-text"><div class="hero-name">차준영</div><div class="hero-sub">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${wd}요일 · 앱 ${BASE.length}개</div></div>
+    <div class="hero-art" aria-hidden="true"><img src="assets/family.jpg" alt="" loading="eager" draggable="false"></div></div>`;
 }
 function viewTab() {
   const groups = byCat().filter(([, items]) => items.length);

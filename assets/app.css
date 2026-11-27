@@ -191,10 +191,10 @@ body[data-band="2"] .app.tint, body[data-band="2"] .slot.tint {
 body[data-theme] .hero { display: flex; align-items: center; gap: .4rem; }
 .hero-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .hero-art { flex: none; height: 104px; aspect-ratio: 4 / 3; position: relative; margin-right: -.4rem;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 42%), linear-gradient(180deg, #000 62%, transparent 100%);
-  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 42%), linear-gradient(180deg, #000 62%, transparent 100%); mask-composite: intersect; }
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 24%), linear-gradient(180deg, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 24%), linear-gradient(180deg, #000 80%, transparent 100%); mask-composite: intersect; }
 .hero-art img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 38%; display: block; pointer-events: none; border-radius: .9rem; }
-body[data-theme="a"] .hero-art img { opacity: .5; filter: saturate(.6) brightness(.85) contrast(.92); }
-body[data-theme="a"] .hero-art::after { content: ''; position: absolute; inset: 0; border-radius: .9rem; background: linear-gradient(160deg, rgba(42,53,102,.30), rgba(11,15,31,.40)); }
+body[data-theme="a"] .hero-art img { opacity: .9; filter: saturate(.9) brightness(1.05); } /* 잘 보이게 밝게(v15) */
+body[data-theme="a"] .hero-art::after { content: ''; position: absolute; inset: 0; border-radius: .9rem; background: linear-gradient(160deg, rgba(42,53,102,.08), rgba(11,15,31,.12)); }
 body[data-theme="b"] .hero-art img { opacity: .75; filter: saturate(.8); }
 @media (min-width: 700px) { .hero-art { height: 120px; } }

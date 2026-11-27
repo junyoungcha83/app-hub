@@ -7,6 +7,13 @@
 const DEFAULT_CATS = ['생활·집안', '공부·아이', '게임·재미', '일·돈', '여행·바깥'];
 const COLORS = ['#e74c3c', '#e67e22', '#f1c40f', '#27ae60', '#16a085', '#2980b9', '#4255d4', '#8e44ad', '#e84393', '#7f8c8d'];
 const $ = (id) => document.getElementById(id);
+const BAND_DEFAULT = '#5b6378'; // 색을 안 정한 분류의 띠 색
+// 배경이 밝으면 검은 글자, 어두우면 흰 글자(노란 띠에 흰 글자가 안 보이지 않게)
+function inkOn(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || ''); if (!m) return 'light';
+  const n = parseInt(m[1], 16), [r, g, b] = [n >> 16 & 255, n >> 8 & 255, n & 255].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.45 ? 'dark' : 'light';
+}
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let BASE = [];   // data/apps.json
 let ST = load(); // { cats:[], order:{cat:[id]}, meta:{id:{desc,cat,color,url}}, catColors:{cat:color} }
@@ -60,7 +67,7 @@ function render() {
 function viewTab() {
   const groups = byCat().filter(([, items]) => items.length);
   $('view').innerHTML = groups.length ? groups.map(([c, items]) => `
-    <div class="cat">${ST.catColors[c] ? `<i class="cdot" style="background:${ST.catColors[c]}"></i>` : ''}${esc(c)} <span class="n">${items.length}</span></div>
+    <div class="band${inkOn(ST.catColors[c] || BAND_DEFAULT) === 'dark' ? ' dark' : ''}" style="--b:${ST.catColors[c] || BAND_DEFAULT}"><span>${esc(c)}</span><span class="n">${items.length}</span></div>
     <div class="grid" data-cat="${esc(c)}">${items.map((a) => `
       <div class="app${a.color ? ' tint' : ''}" data-id="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
         ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" draggable="false">` : `<a href="#" data-need="${a.id}" draggable="false">`}

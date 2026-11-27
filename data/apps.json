@@ -1,0 +1,205 @@
+[
+ {
+  "id": "household-account-book",
+  "name": "가계부",
+  "url": "https://junyoungcha83.github.io/household-account-book/",
+  "icon": "https://junyoungcha83.github.io/household-account-book/assets/icon-192.png",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "dinner",
+  "name": "저녁식단",
+  "url": "https://junyoungcha83.github.io/dinner/",
+  "icon": "https://junyoungcha83.github.io/dinner/assets/icon.svg",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "diary-young",
+  "name": "일기",
+  "url": "https://junyoungcha83.github.io/diary-young/",
+  "icon": "https://junyoungcha83.github.io/diary-young/assets/icon-192.png",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "family-chart",
+  "name": "가족관계도",
+  "url": "https://junyoungcha83.github.io/family-chart/",
+  "icon": "https://junyoungcha83.github.io/family-chart/assets/icon-192.png",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "family-schedule",
+  "name": "가족스케줄",
+  "url": "https://junyoungcha83.github.io/family-schedule/",
+  "icon": "https://junyoungcha83.github.io/family-schedule/icon.svg",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "fuel-mate",
+  "name": "주유비교",
+  "url": "https://junyoungcha83.github.io/fuel-mate/",
+  "icon": "https://junyoungcha83.github.io/fuel-mate/assets/icon-192.png",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "book-collection",
+  "name": "도서모음",
+  "url": "https://junyoungcha83.github.io/book-collection/",
+  "icon": "https://junyoungcha83.github.io/book-collection/assets/icon.svg",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "my-ai-secretary",
+  "name": "AI 비서",
+  "url": "https://my-ai-secretary.junyoung-cha83.workers.dev/",
+  "icon": "https://my-ai-secretary.junyoung-cha83.workers.dev/assets/icon-192.png",
+  "cat": "생활·집안"
+ },
+ {
+  "id": "seungho-dict",
+  "name": "승호의사전",
+  "url": "https://junyoungcha83.github.io/seungho-dict/",
+  "icon": "https://junyoungcha83.github.io/seungho-dict/assets/icon-192.png",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "hanja-study",
+  "name": "한자 급수 공부",
+  "url": "https://junyoungcha83.github.io/hanja-study/",
+  "icon": "https://junyoungcha83.github.io/hanja-study/assets/icon-192.png",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "quiz-world",
+  "name": "퀴즈세상",
+  "url": "https://junyoungcha83.github.io/quiz-world/",
+  "icon": "https://junyoungcha83.github.io/quiz-world/assets/icon-192.png",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "school-timetable",
+  "name": "주간 시간표",
+  "url": "https://junyoungcha83.github.io/school-timetable/",
+  "icon": "https://junyoungcha83.github.io/school-timetable/assets/icon.svg",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "card-atlas",
+  "name": "카드 도감",
+  "url": "https://junyoungcha83.github.io/card-atlas/",
+  "icon": "https://junyoungcha83.github.io/card-atlas/assets/icon.svg",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "origami",
+  "name": "종이접기",
+  "url": "https://junyoungcha83.github.io/origami/",
+  "icon": "https://junyoungcha83.github.io/origami/assets/icon.svg",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "soccer-lineup",
+  "name": "축구 포지션",
+  "url": "https://junyoungcha83.github.io/soccer-lineup/",
+  "icon": "https://junyoungcha83.github.io/soccer-lineup/assets/icon-192.png",
+  "cat": "공부·아이"
+ },
+ {
+  "id": "game-world",
+  "name": "게임 월드",
+  "url": "https://junyoungcha83.github.io/game-world/",
+  "icon": "https://junyoungcha83.github.io/game-world/assets/icon-192.png",
+  "cat": "게임·재미"
+ },
+ {
+  "id": "funfun",
+  "name": "Fun fun",
+  "url": "https://junyoungcha83.github.io/funfun/",
+  "icon": "https://junyoungcha83.github.io/funfun/assets/icon.svg",
+  "cat": "게임·재미"
+ },
+ {
+  "id": "fifa-guide",
+  "name": "FIFA공략",
+  "url": "https://junyoungcha83.github.io/fifa-guide/",
+  "icon": "https://junyoungcha83.github.io/fifa-guide/assets/icon.svg",
+  "cat": "게임·재미"
+ },
+ {
+  "id": "video-grid",
+  "name": "비디오 그리드",
+  "url": "https://junyoungcha83.github.io/video-grid/",
+  "icon": "https://junyoungcha83.github.io/video-grid/icon.svg",
+  "cat": "게임·재미"
+ },
+ {
+  "id": "article-search",
+  "name": "기사검색",
+  "url": "https://junyoungcha83.github.io/article-search/",
+  "icon": "https://junyoungcha83.github.io/article-search/assets/icon-192.png",
+  "cat": "일·돈"
+ },
+ {
+  "id": "blog-writer",
+  "name": "블로그작성",
+  "url": "https://junyoungcha83.github.io/blog-writer/",
+  "icon": "https://junyoungcha83.github.io/blog-writer/assets/icon-192.png",
+  "cat": "일·돈"
+ },
+ {
+  "id": "briefing",
+  "name": "브리핑",
+  "url": "https://junyoungcha83.github.io/briefing/",
+  "icon": "https://junyoungcha83.github.io/briefing/assets/icon.svg",
+  "cat": "일·돈"
+ },
+ {
+  "id": "corp-setup-guide",
+  "name": "법인설립가이드",
+  "url": "https://junyoungcha83.github.io/corp-setup-guide/",
+  "icon": "https://junyoungcha83.github.io/corp-setup-guide/assets/icon.svg",
+  "cat": "일·돈"
+ },
+ {
+  "id": "stock-paper-dash",
+  "name": "페이퍼 트레이딩",
+  "url": "https://stock-paper-dash.pages.dev/",
+  "icon": "",
+  "cat": "일·돈"
+ },
+ {
+  "id": "realestate-auction",
+  "name": "경매 사건 목록",
+  "url": "",
+  "icon": "",
+  "cat": "일·돈"
+ },
+ {
+  "id": "jido-finder",
+  "name": "지도찾기",
+  "url": "https://jido-finder.pages.dev/",
+  "icon": "https://jido-finder.pages.dev/assets/icon.svg",
+  "cat": "일·돈"
+ },
+ {
+  "id": "camping-finder",
+  "name": "캠핑장 찾기",
+  "url": "https://junyoungcha83.github.io/camping-finder/",
+  "icon": "https://junyoungcha83.github.io/camping-finder/assets/icon-192.png",
+  "cat": "여행·바깥"
+ },
+ {
+  "id": "flight-deals",
+  "name": "항공특가",
+  "url": "https://junyoungcha83.github.io/flight-deals/",
+  "icon": "https://junyoungcha83.github.io/flight-deals/assets/icon.svg",
+  "cat": "여행·바깥"
+ },
+ {
+  "id": "fukuoka-beppu-trip",
+  "name": "후쿠오카·벳푸 여행",
+  "url": "https://junyoungcha83.github.io/fukuoka-beppu-trip/",
+  "icon": "https://junyoungcha83.github.io/fukuoka-beppu-trip/assets/icon.svg",
+  "cat": "여행·바깥"
+ }
+]

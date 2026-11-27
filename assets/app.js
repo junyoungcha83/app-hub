@@ -65,8 +65,8 @@ async function copy(text) {
 // 디자인: 기본은 시안 A(밤하늘 글래스, 2026-11-28 선택). ?theme=b 크림 · ?theme=classic 예전 밝은 모습 미리보기.
 const THEME = (new URLSearchParams(location.search).get('theme') || 'a').toLowerCase();
 if (['a', 'b'].includes(THEME)) document.body.dataset.theme = THEME;
-// 분류 색 세기 미리보기: ?band=1 파스텔 띠 · ?band=2 은은한 유리 띠 (없으면 지금처럼 진한 색)
-const BAND = new URLSearchParams(location.search).get('band');
+// 분류 색 세기: 기본은 2(은은한 유리 띠, 2026-11-28 선택). ?band=1 파스텔 띠 · ?band=0 예전 진한 색 미리보기
+const BAND = new URLSearchParams(location.search).get('band') ?? '2';
 if (['1', '2'].includes(BAND)) document.body.dataset.band = BAND;
 let tab = 'view';
 document.querySelectorAll('[data-tab]').forEach((b) => { b.onclick = () => { tab = b.dataset.tab; render(); }; });

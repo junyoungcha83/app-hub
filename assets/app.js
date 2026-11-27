@@ -68,7 +68,7 @@ function viewTab() {
   const groups = byCat().filter(([, items]) => items.length);
   $('view').innerHTML = groups.length ? groups.map(([c, items]) => `
     <div class="band${inkOn(ST.catColors[c] || BAND_DEFAULT) === 'dark' ? ' dark' : ''}" style="--b:${ST.catColors[c] || BAND_DEFAULT}"><span>${esc(c)}</span><span class="n">${items.length}</span></div>
-    <div class="grid" data-cat="${esc(c)}">${items.map((a) => `
+    <div class="grid" data-cat="${esc(c)}"${ST.catColors[c] ? ` data-color="${ST.catColors[c]}"` : ''}>${items.map((a) => `
       <div class="app${a.color ? ' tint' : ''}" data-id="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
         ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" draggable="false">` : `<a href="#" data-need="${a.id}" draggable="false">`}
           ${iconHTML(a)}<span class="name">${esc(a.name)}</span>${a.desc ? `<span class="desc">${esc(a.desc)}</span>` : ''}${a.url ? '' : '<span class="need">주소 필요</span>'}
@@ -78,7 +78,25 @@ function viewTab() {
   document.querySelectorAll('[data-copy]').forEach((b) => { b.onclick = (e) => { e.preventDefault(); e.stopPropagation(); copy(b.dataset.copy); }; });
   document.querySelectorAll('[data-need]').forEach((a) => { a.onclick = (e) => { e.preventDefault(); toast('설정에서 주소를 넣어 주세요'); editApp(a.dataset.need); }; });
   document.querySelectorAll('.app').forEach(dragable);
+  fillSlots();
 }
+// 분류 마지막 줄의 빈칸을 같은 모양의 빈 틀로 채운다(열 수가 화면 폭 따라 바뀌므로 그때그때 계산)
+function fillSlots() {
+  document.querySelectorAll('.grid').forEach((g) => {
+    g.querySelectorAll('.slot').forEach((x) => x.remove());
+    const cols = getComputedStyle(g).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
+    const n = g.querySelectorAll('.app').length, k = (cols - (n % cols)) % cols;
+    const c = g.dataset.color;
+    for (let i = 0; i < k; i++) {
+      const d = document.createElement('div');
+      d.className = 'slot' + (c ? ' tint' : ''); if (c) d.style.setProperty('--c', c);
+      d.setAttribute('aria-hidden', 'true');
+      g.appendChild(d);
+    }
+  });
+}
+let resizeT;
+addEventListener('resize', () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if (tab === 'view') fillSlots(); }, 120); });
 
 // 길게 눌러(0.35초) 끌기 — 같은 분류(grid) 안에서만. 짧게 누르면 앱 열기, 누른 채 움직이면 화면 스크롤.
 let justDragged = false;

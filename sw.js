@@ -1,6 +1,6 @@
 // 화면 파일만 담아 둔다(앱 아이콘은 각 앱 주소에서 바로 불러옴). 새 버전은 CACHE 와 ?v= 함께 올리기.
-const CACHE = 'app-hub-v6';
-const FILES = ['./', 'index.html', 'assets/app.css?v=6', 'assets/app.js?v=6', 'data/apps.json', 'manifest.webmanifest', 'assets/icon-192.png'];
+const CACHE = 'app-hub-v7';
+const FILES = ['./', 'index.html', 'assets/app.css?v=7', 'assets/app.js?v=7', 'data/apps.json', 'manifest.webmanifest', 'assets/icon-192.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))); self.clients.claim(); });
 self.addEventListener('fetch', (e) => {

@@ -149,3 +149,10 @@ body[data-theme="b"] .app, body[data-theme="b"] .slot {
 body[data-theme="b"] .app.tint, body[data-theme="b"] .slot.tint { background: color-mix(in srgb, var(--c) 14%, #eeebe4); }
 body[data-theme="b"] .app img, body[data-theme="b"] .app .letter { box-shadow: 3px 3px 8px rgba(150,140,120,.35), -2px -2px 6px rgba(255,255,255,.8); border-radius: 15px; }
 body[data-theme="b"] .tabs { background: #eeebe4; border-top: 0; box-shadow: 0 -4px 12px rgba(150,140,120,.2); }
+
+/* Brave 로 열리는 앱 표시 */
+.app .brave { font-size: .62rem; font-weight: 700; color: #fb542b; background: rgba(251,84,43,.12); border-radius: .5rem; padding: .02rem .35rem; }
+body[data-theme="a"] .app .brave { color: #ff8a65; background: rgba(255,138,101,.16); }
+.chkrow { display: flex !important; align-items: flex-start; gap: .5rem; }
+.chkrow input { width: 1.15rem; height: 1.15rem; margin-top: .1rem; }
+.chkrow small { display: block; color: var(--sub); font-weight: 400; font-size: .75rem; }

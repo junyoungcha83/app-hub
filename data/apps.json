@@ -95,7 +95,8 @@
   "name": "종이접기",
   "url": "https://junyoungcha83.github.io/origami/",
   "icon": "https://junyoungcha83.github.io/origami/assets/icon.svg",
-  "cat": "공부·아이"
+  "cat": "공부·아이",
+  "brave": true
  },
  {
   "id": "soccer-lineup",

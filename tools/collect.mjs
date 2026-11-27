@@ -14,6 +14,7 @@ const APPS = [
   ['stock-paper-dash', 'https://stock-paper-dash.pages.dev/', '일·돈'], ['realestate-auction', 'https://realestate-auction-myauction.junyoung-cha83.workers.dev/', '일·돈'], ['jido-finder', 'https://jido-finder.pages.dev/', '일·돈'],
   ['camping-finder', G + 'camping-finder/', '여행·바깥'], ['flight-deals', G + 'flight-deals/', '여행·바깥'], ['fukuoka-beppu-trip', G + 'fukuoka-beppu-trip/', '여행·바깥'],
 ];
+const BRAVE = new Set(['origami']); // 안드로이드에서 Brave 로 열 앱(기본값, 설정에서 앱마다 바꿀 수 있음)
 const NAMES = { 'realestate-auction': '경매 사건 목록', 'stock-paper-dash': '페이퍼 트레이딩', 'my-ai-secretary': 'AI 비서' };
 // 아이콘이 없는(또는 로그인 때문에 못 가져오는) 앱은 여기 그린 그림을 씀(assets/icons/)
 const ICONS = { 'stock-paper-dash': 'assets/icons/paper-trading.svg', 'realestate-auction': 'assets/icons/realestate-auction.svg' };
@@ -27,7 +28,7 @@ function pickIcon(icons) {
 }
 const out = [];
 for (const [id, url, cat] of APPS) {
-  const a = { id, name: NAMES[id] || id, url, icon: '', cat };
+  const a = { id, name: NAMES[id] || id, url, icon: '', cat, ...(BRAVE.has(id) ? { brave: true } : {}) };
   if (url) {
     try {
       const res = await get(url);

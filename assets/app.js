@@ -28,7 +28,7 @@ function apps() {
   return BASE.map((a) => {
     const m = ST.meta[a.id] || {};
     const cat = m.cat && ST.cats.includes(m.cat) ? m.cat : ST.cats.includes(a.cat) ? a.cat : (ST.cats[0] || '미분류');
-    return { ...a, url: m.url ?? a.url, desc: m.desc || '', ownColor: m.color || '', color: m.color || ST.catColors[cat] || '', cat };
+    return { ...a, url: m.url ?? a.url, brave: m.brave ?? !!a.brave, desc: m.desc || '', ownColor: m.color || '', color: m.color || ST.catColors[cat] || '', cat };
   });
 }
 function byCat() {
@@ -41,6 +41,14 @@ function byCat() {
     out.push([c, items]);
   }
   return out;
+}
+// Brave 로 열기: 안드로이드 Chrome·삼성 인터넷은 intent 링크로 특정 앱(com.brave.browser)을 지정해 열 수 있다.
+// Brave 가 없으면 S.browser_fallback_url 로 원래 주소. PC·아이폰에서는 그냥 원래 주소(브라우저를 고를 방법이 없음).
+const IS_ANDROID = /Android/i.test(navigator.userAgent);
+function openHref(a) {
+  if (!a.brave || !IS_ANDROID || !/^https:\/\//.test(a.url)) return { href: a.url, target: '_blank' };
+  const u = new URL(a.url);
+  return { href: `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=com.brave.browser;S.browser_fallback_url=${encodeURIComponent(a.url)};end`, target: '' };
 }
 const iconHTML = (a, cls = '') => a.icon
   ? `<img src="${esc(a.icon)}" alt="" loading="lazy" draggable="false" class="${cls}" onerror="this.outerHTML='<span class=&quot;letter ${cls}&quot;>${esc(a.name.slice(0, 1))}</span>'">`
@@ -78,8 +86,8 @@ function viewTab() {
     <div class="band${inkOn(ST.catColors[c] || BAND_DEFAULT) === 'dark' ? ' dark' : ''}" style="--b:${ST.catColors[c] || BAND_DEFAULT}"><span>${esc(c)}</span><span class="n">${items.length}</span></div>
     <div class="grid" data-cat="${esc(c)}"${ST.catColors[c] ? ` data-color="${ST.catColors[c]}"` : ''}>${items.map((a) => `
       <div class="app${a.color ? ' tint' : ''}" data-id="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
-        ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" draggable="false">` : `<a href="#" data-need="${a.id}" draggable="false">`}
-          ${iconHTML(a)}<span class="name">${esc(a.name)}</span>${a.desc ? `<span class="desc">${esc(a.desc)}</span>` : ''}${a.url ? '' : '<span class="need">주소 필요</span>'}
+        ${a.url ? ((o) => `<a href="${esc(o.href)}"${o.target ? ` target="${o.target}"` : ''} rel="noopener" draggable="false">`)(openHref(a)) : `<a href="#" data-need="${a.id}" draggable="false">`}
+          ${iconHTML(a)}<span class="name">${esc(a.name)}</span>${a.desc ? `<span class="desc">${esc(a.desc)}</span>` : ''}${a.url ? '' : '<span class="need">주소 필요</span>'}${a.brave ? '<span class="brave" title="안드로이드에서 Brave 로 열려요">🦁 Brave</span>' : ''}
         </a>
         ${a.url ? `<button class="copy" data-copy="${esc(a.url)}" aria-label="주소 복사">📋</button>` : ''}
       </div>`).join('')}</div>`).join('') : '<p class="empty">보여 줄 앱이 없어요.</p>');
@@ -170,7 +178,7 @@ function settingsTab() {
       <p class="note">분류를 지우면 그 안의 앱은 첫 번째 분류로 옮겨져요. 분류 순서가 보기 화면 순서예요.<br>🎨 분류 색깔은 그 분류의 모든 앱 카드에 칠해져요(앱에 따로 정한 색이 있으면 그 색이 먼저).</p></div>
     <div class="card"><h3>📱 앱 (눌러서 설명·분류·색깔 바꾸기)</h3>
       ${groups.map(([c, items]) => items.length ? `<div class="cat-h">${esc(c)}</div>` + items.map((a) => `<div class="row" data-edit="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
-        ${iconHTML(a)}<span class="grow"><b>${esc(a.name)}</b><small>${esc(a.desc || (a.url ? '설명 없음' : '⚠️ 주소 필요'))}</small></span>
+        ${iconHTML(a)}<span class="grow"><b>${esc(a.name)}${a.brave ? ' 🦁' : ''}</b><small>${esc(a.desc || (a.url ? '설명 없음' : '⚠️ 주소 필요'))}</small></span>
         <span class="dot" style="background:${a.color || '#fff'}"></span><button class="btn small">수정</button></div>`).join('') : '').join('')}</div>
     <div class="card"><h3>💾 설정 옮기기·되돌리기</h3>
       <p class="note">설정은 이 기기에만 저장돼요. 다른 폰·PC에서도 같게 쓰려면 ‘내보내기’로 복사해 그 기기의 ‘가져오기’에 붙여 넣으세요.</p>
@@ -245,6 +253,7 @@ function editApp(id) {
       ${COLORS.map((c) => `<button class="sw${color === c ? ' on' : ''}" data-c="${c}" style="background:${c}"></button>`).join('')}
       <input type="color" id="eCustom" value="${color || '#4255d4'}" title="다른 색"></div></div>
     <label class="f"><span>주소</span><input type="url" id="eUrl" value="${esc(a.url)}" placeholder="https://..."></label>
+    <label class="f chkrow"><input type="checkbox" id="eBrave" ${a.brave ? 'checked' : ''}> <span>🦁 Brave로 열기 <small>(안드로이드 폰에서만 · Brave 가 없으면 원래대로 열림)</small></span></label>
     <div class="acts"><button class="btn" id="eCopy" ${a.url ? '' : 'disabled'}>📋 주소 복사</button><button class="btn pri" id="eSave">저장</button></div>`, () => {
     const pick = (c) => { color = c; document.querySelectorAll('#eCol .sw').forEach((b) => b.classList.toggle('on', b.dataset.c === c)); };
     document.querySelectorAll('#eCol .sw').forEach((b) => { b.onclick = () => pick(b.dataset.c); });
@@ -255,6 +264,8 @@ function editApp(id) {
       if (url && !/^https?:\/\//.test(url)) return toast('주소는 https:// 로 시작해야 해요');
       const m = (ST.meta[id] ||= {});
       m.desc = $('eDesc').value.trim(); m.color = color; m.cat = $('eCat').value;
+      const bd = !!BASE.find((x) => x.id === id).brave, bv = $('eBrave').checked;
+      if (bv !== bd) m.brave = bv; else delete m.brave;
       const base = BASE.find((x) => x.id === id).url;
       if (url !== base) m.url = url; else delete m.url;
       save(); closeSheet(); render(); toast('저장했어요');

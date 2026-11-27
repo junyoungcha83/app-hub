@@ -164,14 +164,14 @@
   "id": "stock-paper-dash",
   "name": "페이퍼 트레이딩",
   "url": "https://stock-paper-dash.pages.dev/",
-  "icon": "",
+  "icon": "assets/icons/paper-trading.svg",
   "cat": "일·돈"
  },
  {
   "id": "realestate-auction",
   "name": "경매 사건 목록",
   "url": "https://realestate-auction-myauction.junyoung-cha83.workers.dev/",
-  "icon": "",
+  "icon": "assets/icons/realestate-auction.svg",
   "cat": "일·돈"
  },
  {

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a5e"/><stop offset="1" stop-color="#1f1638"/></linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c47a3c"/><stop offset="1" stop-color="#7a4318"/></linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="40" fill="url(#bg)"/>
+  <!-- 주택 -->
+  <rect x="112" y="40" width="14" height="28" rx="2" fill="#8a5a44"/>
+  <path d="M30 92 L86 40 L142 92Z" fill="#e2574c" stroke="#2a1c3d" stroke-width="5" stroke-linejoin="round"/>
+  <rect x="42" y="88" width="88" height="64" rx="4" fill="#f3efe6" stroke="#2a1c3d" stroke-width="5"/>
+  <rect x="54" y="102" width="22" height="20" rx="2" fill="#7cc4f2" stroke="#2a1c3d" stroke-width="4"/>
+  <path d="M65 102v20M54 112h22" stroke="#2a1c3d" stroke-width="3"/>
+  <rect x="90" y="112" width="24" height="40" rx="2" fill="#b0703a" stroke="#2a1c3d" stroke-width="4"/>
+  <circle cx="108" cy="133" r="2.5" fill="#2a1c3d"/>
+  <!-- 판사봉(겹쳐서 오른쪽 아래) + 받침 -->
+  <rect x="104" y="160" width="68" height="14" rx="4" fill="url(#wood)" stroke="#2a1c3d" stroke-width="4"/>
+  <g transform="translate(138 130) rotate(-40)">
+    <rect x="-4" y="-6" width="64" height="12" rx="5" fill="url(#wood)" stroke="#2a1c3d" stroke-width="4"/>
+    <rect x="-22" y="-24" width="36" height="48" rx="7" fill="url(#wood)" stroke="#2a1c3d" stroke-width="4"/>
+    <rect x="-22" y="-14" width="36" height="6" fill="#ffd34d" stroke="#2a1c3d" stroke-width="2.5"/>
+    <rect x="-22" y="8" width="36" height="6" fill="#ffd34d" stroke="#2a1c3d" stroke-width="2.5"/>
+  </g>
+</svg>

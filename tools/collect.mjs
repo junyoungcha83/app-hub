@@ -15,6 +15,8 @@ const APPS = [
   ['camping-finder', G + 'camping-finder/', '여행·바깥'], ['flight-deals', G + 'flight-deals/', '여행·바깥'], ['fukuoka-beppu-trip', G + 'fukuoka-beppu-trip/', '여행·바깥'],
 ];
 const NAMES = { 'realestate-auction': '경매 사건 목록', 'stock-paper-dash': '페이퍼 트레이딩', 'my-ai-secretary': 'AI 비서' };
+// 아이콘이 없는(또는 로그인 때문에 못 가져오는) 앱은 여기 그린 그림을 씀(assets/icons/)
+const ICONS = { 'stock-paper-dash': 'assets/icons/paper-trading.svg', 'realestate-auction': 'assets/icons/realestate-auction.svg' };
 const abs = (u, base) => new URL(u, base).href;
 async function get(u) { const r = await fetch(u, { redirect: 'follow' }); if (!r.ok) throw new Error(r.status); return r; }
 function pickIcon(icons) {
@@ -42,6 +44,7 @@ for (const [id, url, cat] of APPS) {
       if (a.icon) await get(a.icon); // 그림이 실제로 열리는지
     } catch (e) { a.err = String(e.message || e); }
   }
+  if (ICONS[id]) a.icon = ICONS[id];
   out.push(a);
   console.log(`${a.err ? '⚠️' : '✓'} ${a.cat} | ${a.name} | ${a.icon || '(아이콘 없음)'}${a.err ? ' | ' + a.err : ''}`);
 }

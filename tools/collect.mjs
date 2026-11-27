@@ -11,7 +11,7 @@ const APPS = [
   ['school-timetable', G + 'school-timetable/', '공부·아이'], ['card-atlas', G + 'card-atlas/', '공부·아이'], ['origami', G + 'origami/', '공부·아이'], ['soccer-lineup', G + 'soccer-lineup/', '공부·아이'],
   ['game-world', G + 'game-world/', '게임·재미'], ['funfun', G + 'funfun/', '게임·재미'], ['fifa-guide', G + 'fifa-guide/', '게임·재미'], ['video-grid', G + 'video-grid/', '게임·재미'],
   ['article-search', G + 'article-search/', '일·돈'], ['blog-writer', G + 'blog-writer/', '일·돈'], ['briefing', G + 'briefing/', '일·돈'], ['corp-setup-guide', G + 'corp-setup-guide/', '일·돈'],
-  ['stock-paper-dash', 'https://stock-paper-dash.pages.dev/', '일·돈'], ['realestate-auction', '', '일·돈'], ['jido-finder', 'https://jido-finder.pages.dev/', '일·돈'],
+  ['stock-paper-dash', 'https://stock-paper-dash.pages.dev/', '일·돈'], ['realestate-auction', 'https://realestate-auction-myauction.junyoung-cha83.workers.dev/', '일·돈'], ['jido-finder', 'https://jido-finder.pages.dev/', '일·돈'],
   ['camping-finder', G + 'camping-finder/', '여행·바깥'], ['flight-deals', G + 'flight-deals/', '여행·바깥'], ['fukuoka-beppu-trip', G + 'fukuoka-beppu-trip/', '여행·바깥'],
 ];
 const NAMES = { 'realestate-auction': '경매 사건 목록', 'stock-paper-dash': '페이퍼 트레이딩', 'my-ai-secretary': 'AI 비서' };
@@ -28,7 +28,9 @@ for (const [id, url, cat] of APPS) {
   const a = { id, name: NAMES[id] || id, url, icon: '', cat };
   if (url) {
     try {
-      const html = await (await get(url)).text();
+      const res = await get(url);
+      if (new URL(res.url).host !== new URL(url).host) throw new Error('로그인 화면으로 넘어감(' + new URL(res.url).host + ') — 이름·아이콘은 못 가져옴');
+      const html = await res.text();
       const t = html.match(/<title>([^<]*)<\/title>/i); if (t && !NAMES[id]) a.name = t[1].trim();
       const ml = html.match(/<link[^>]+rel=["']manifest["'][^>]*>/i)?.[0]?.match(/href=["']([^"']+)/)?.[1];
       if (ml) {

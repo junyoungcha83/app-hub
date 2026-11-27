@@ -1,6 +1,6 @@
 {
-  "name": "내 앱 모음",
-  "short_name": "앱 모음",
+  "name": "차준영",
+  "short_name": "차준영",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

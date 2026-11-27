@@ -1,5 +1,5 @@
 'use strict';
-/* 내 앱 모음 — 내가 만든 앱을 한 화면에서.
+/* 차준영(앱 모음) — 내가 만든 앱을 한 화면에서.
  *  앱 목록(이름·주소·지금 쓰는 아이콘)은 data/apps.json (tools/collect.mjs 가 각 앱의 manifest 에서 가져옴).
  *  분류·순서·설명·색깔·주소 고침은 이 기기 localStorage 에만 저장(기기마다 따로). 백업은 설정 > 내보내기.
  *  색깔: 앱에 따로 정한 색 > 그 앱 분류의 색 > 없음.
@@ -58,7 +58,7 @@ let tab = 'view';
 document.querySelectorAll('[data-tab]').forEach((b) => { b.onclick = () => { tab = b.dataset.tab; render(); }; });
 function render() {
   document.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
-  $('title').textContent = tab === 'view' ? '내 앱 모음' : '설정';
+  $('title').textContent = tab === 'view' ? '차준영' : '설정';
   $('hint').textContent = tab === 'view' ? '길게 눌러 끌면 같은 분류 안에서 순서 바꾸기' : '';
   tab === 'view' ? viewTab() : settingsTab();
 }

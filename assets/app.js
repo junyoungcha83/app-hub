@@ -54,6 +54,9 @@ async function copy(text) {
 }
 
 /* ───────────── 탭 ───────────── */
+// 디자인 시안: 주소에 ?theme=a 또는 ?theme=b 를 붙이면 그 모습으로(미리보기). 없으면 지금 모습.
+const THEME = (new URLSearchParams(location.search).get('theme') || '').toLowerCase();
+if (['a', 'b'].includes(THEME)) document.body.dataset.theme = THEME;
 let tab = 'view';
 document.querySelectorAll('[data-tab]').forEach((b) => { b.onclick = () => { tab = b.dataset.tab; render(); }; });
 function render() {
@@ -64,9 +67,14 @@ function render() {
 }
 
 /* ───────────── 보기 ───────────── */
+function heroHTML() {
+  if (!document.body.dataset.theme) return '';
+  const d = new Date(), wd = '일월화수목금토'[d.getDay()];
+  return `<div class="hero"><div class="hero-name">차준영</div><div class="hero-sub">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${wd}요일 · 앱 ${BASE.length}개</div></div>`;
+}
 function viewTab() {
   const groups = byCat().filter(([, items]) => items.length);
-  $('view').innerHTML = groups.length ? groups.map(([c, items]) => `
+  $('view').innerHTML = heroHTML() + (groups.length ? groups.map(([c, items]) => `
     <div class="band${inkOn(ST.catColors[c] || BAND_DEFAULT) === 'dark' ? ' dark' : ''}" style="--b:${ST.catColors[c] || BAND_DEFAULT}"><span>${esc(c)}</span><span class="n">${items.length}</span></div>
     <div class="grid" data-cat="${esc(c)}"${ST.catColors[c] ? ` data-color="${ST.catColors[c]}"` : ''}>${items.map((a) => `
       <div class="app${a.color ? ' tint' : ''}" data-id="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
@@ -74,7 +82,7 @@ function viewTab() {
           ${iconHTML(a)}<span class="name">${esc(a.name)}</span>${a.desc ? `<span class="desc">${esc(a.desc)}</span>` : ''}${a.url ? '' : '<span class="need">주소 필요</span>'}
         </a>
         ${a.url ? `<button class="copy" data-copy="${esc(a.url)}" aria-label="주소 복사">📋</button>` : ''}
-      </div>`).join('')}</div>`).join('') : '<p class="empty">보여 줄 앱이 없어요.</p>';
+      </div>`).join('')}</div>`).join('') : '<p class="empty">보여 줄 앱이 없어요.</p>');
   document.querySelectorAll('[data-copy]').forEach((b) => { b.onclick = (e) => { e.preventDefault(); e.stopPropagation(); copy(b.dataset.copy); }; });
   document.querySelectorAll('[data-need]').forEach((a) => { a.onclick = (e) => { e.preventDefault(); toast('설정에서 주소를 넣어 주세요'); editApp(a.dataset.need); }; });
   document.querySelectorAll('.app').forEach(dragable);

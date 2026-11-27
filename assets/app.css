@@ -92,3 +92,51 @@ main > .band:first-child { margin-top: .4rem; }
 .acts .btn { flex: 1; padding: .65rem; }
 .toast { position: fixed; left: 50%; bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 90; background: rgba(60,66,82,.96); color: #fff; padding: .55rem 1rem; border-radius: 1rem; font-size: .88rem; max-width: 90vw; text-align: center; }
 textarea.json { width: 100%; min-height: 8rem; font-family: ui-monospace, Menlo, monospace; font-size: .75rem; }
+
+/* ───────── 디자인 시안 (?theme=a / ?theme=b 로 미리보기) ───────── */
+.hero { display: none; }
+body[data-theme] .top { display: none; }
+body[data-theme] .hero { display: block; padding: 1.1rem .2rem .5rem; }
+body[data-theme] .hero-name { font-size: 1.9rem; font-weight: 800; letter-spacing: -.02em; }
+body[data-theme] .hero-sub { font-size: .82rem; margin-top: .2rem; }
+body[data-theme] main > .hero + .band { margin-top: .5rem; }
+
+/* 시안 A — 밤하늘 글래스: 짙은 남색 바탕, 빛나는 색 띠, 반투명 유리 음각 칸 */
+body[data-theme="a"] { background: radial-gradient(120% 80% at 10% 0%, #2a3566 0%, #141a33 45%, #0b0f1f 100%) fixed; color: #eef1ff; }
+body[data-theme="a"] .hero-name { background: linear-gradient(90deg, #fff, #b9c4ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+body[data-theme="a"] .hero-sub { color: #9aa5d6; }
+body[data-theme="a"] .band {
+  border-radius: 1rem; padding: .7rem 1.05rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--b) 85%, #fff) 0%, var(--b) 45%, color-mix(in srgb, var(--b) 70%, #000) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 0 rgba(0,0,0,.25), 0 8px 22px color-mix(in srgb, var(--b) 45%, transparent), 0 2px 0 rgba(0,0,0,.35);
+}
+body[data-theme="a"] .app, body[data-theme="a"] .slot {
+  background: rgba(255,255,255,.05); border-radius: .9rem;
+  box-shadow: inset 3px 3px 8px rgba(0,0,0,.55), inset -1px -1px 0 rgba(255,255,255,.08);
+}
+body[data-theme="a"] .app.tint, body[data-theme="a"] .slot.tint { background: color-mix(in srgb, var(--c) 20%, rgba(255,255,255,.03)); }
+body[data-theme="a"] .app .name { color: #e8ecff; }
+body[data-theme="a"] .app .desc { color: #9aa5d6; }
+body[data-theme="a"] .app img, body[data-theme="a"] .app .letter { box-shadow: 0 4px 12px rgba(0,0,0,.45); }
+body[data-theme="a"] .app .copy { background: rgba(255,255,255,.12); }
+body[data-theme="a"] .tabs { background: rgba(11,15,31,.85); border-top-color: rgba(255,255,255,.08); backdrop-filter: blur(10px); }
+body[data-theme="a"] .tabs button { color: #8b95c4; }
+body[data-theme="a"] .tabs button.on { color: #fff; }
+
+/* 시안 B — 부드러운 크림: 밝은 크림 바탕, 파스텔 띠(뉴모피즘 양각), 부드럽게 눌린 칸 */
+body[data-theme="b"] { background: #eeebe4; color: #2b2a27; }
+body[data-theme="b"] .hero-name { color: #2b2a27; font-family: "Apple SD Gothic Neo", "Noto Serif KR", serif; }
+body[data-theme="b"] .hero-sub { color: #8a857a; }
+body[data-theme="b"] .band {
+  border-radius: 1.1rem; padding: .7rem 1.05rem; color: color-mix(in srgb, var(--b) 60%, #000); text-shadow: 0 1px 0 rgba(255,255,255,.6);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--b) 30%, #fff), color-mix(in srgb, var(--b) 45%, #f3efe7));
+  box-shadow: 6px 6px 14px rgba(150,140,120,.35), -6px -6px 14px rgba(255,255,255,.9), inset 0 1px 0 rgba(255,255,255,.8);
+}
+body[data-theme="b"] .band .n { background: rgba(255,255,255,.55); box-shadow: none; color: inherit; }
+body[data-theme="b"] .app, body[data-theme="b"] .slot {
+  background: #eeebe4; border-radius: 1rem;
+  box-shadow: inset 4px 4px 9px rgba(150,140,120,.38), inset -4px -4px 9px rgba(255,255,255,.95);
+}
+body[data-theme="b"] .app.tint, body[data-theme="b"] .slot.tint { background: color-mix(in srgb, var(--c) 14%, #eeebe4); }
+body[data-theme="b"] .app img, body[data-theme="b"] .app .letter { box-shadow: 3px 3px 8px rgba(150,140,120,.35), -2px -2px 6px rgba(255,255,255,.8); border-radius: 15px; }
+body[data-theme="b"] .tabs { background: #eeebe4; border-top: 0; box-shadow: 0 -4px 12px rgba(150,140,120,.2); }

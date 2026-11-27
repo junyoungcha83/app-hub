@@ -2,16 +2,17 @@
 /* 내 앱 모음 — 내가 만든 앱을 한 화면에서.
  *  앱 목록(이름·주소·지금 쓰는 아이콘)은 data/apps.json (tools/collect.mjs 가 각 앱의 manifest 에서 가져옴).
  *  분류·순서·설명·색깔·주소 고침은 이 기기 localStorage 에만 저장(기기마다 따로). 백업은 설정 > 내보내기.
+ *  색깔: 앱에 따로 정한 색 > 그 앱 분류의 색 > 없음.
  */
 const DEFAULT_CATS = ['생활·집안', '공부·아이', '게임·재미', '일·돈', '여행·바깥'];
 const COLORS = ['#e74c3c', '#e67e22', '#f1c40f', '#27ae60', '#16a085', '#2980b9', '#4255d4', '#8e44ad', '#e84393', '#7f8c8d'];
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let BASE = [];   // data/apps.json
-let ST = load(); // { cats:[], order:{cat:[id]}, meta:{id:{desc,cat,color,url}} }
+let ST = load(); // { cats:[], order:{cat:[id]}, meta:{id:{desc,cat,color,url}}, catColors:{cat:color} }
 function load() {
-  try { const v = JSON.parse(localStorage.getItem('app-hub') || '{}'); return { cats: v.cats || [...DEFAULT_CATS], order: v.order || {}, meta: v.meta || {} }; }
-  catch { return { cats: [...DEFAULT_CATS], order: {}, meta: {} }; }
+  try { const v = JSON.parse(localStorage.getItem('app-hub') || '{}'); return { cats: v.cats || [...DEFAULT_CATS], order: v.order || {}, meta: v.meta || {}, catColors: v.catColors || {} }; }
+  catch { return { cats: [...DEFAULT_CATS], order: {}, meta: {}, catColors: {} }; }
 }
 const save = () => { try { localStorage.setItem('app-hub', JSON.stringify(ST)); } catch {} };
 
@@ -20,7 +21,7 @@ function apps() {
   return BASE.map((a) => {
     const m = ST.meta[a.id] || {};
     const cat = m.cat && ST.cats.includes(m.cat) ? m.cat : ST.cats.includes(a.cat) ? a.cat : (ST.cats[0] || '미분류');
-    return { ...a, url: m.url ?? a.url, desc: m.desc || '', color: m.color || '', cat };
+    return { ...a, url: m.url ?? a.url, desc: m.desc || '', ownColor: m.color || '', color: m.color || ST.catColors[cat] || '', cat };
   });
 }
 function byCat() {
@@ -59,7 +60,7 @@ function render() {
 function viewTab() {
   const groups = byCat().filter(([, items]) => items.length);
   $('view').innerHTML = groups.length ? groups.map(([c, items]) => `
-    <div class="cat">${esc(c)} <span class="n">${items.length}</span></div>
+    <div class="cat">${ST.catColors[c] ? `<i class="cdot" style="background:${ST.catColors[c]}"></i>` : ''}${esc(c)} <span class="n">${items.length}</span></div>
     <div class="grid" data-cat="${esc(c)}">${items.map((a) => `
       <div class="app${a.color ? ' tint' : ''}" data-id="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
         ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" draggable="false">` : `<a href="#" data-need="${a.id}" draggable="false">`}
@@ -128,11 +129,12 @@ function settingsTab() {
   const groups = byCat();
   $('view').innerHTML = `
     <div class="card"><h3>🗂️ 분류</h3>
-      ${ST.cats.map((c, i) => `<div class="row"><span class="grow"><b>${esc(c)}</b><small>${groups.find(([x]) => x === c)?.[1].length || 0}개</small></span>
+      ${ST.cats.map((c, i) => `<div class="row"><span class="dot" style="background:${ST.catColors[c] || '#fff'}"></span><span class="grow"><b>${esc(c)}</b><small>${groups.find(([x]) => x === c)?.[1].length || 0}개</small></span>
+        <button class="btn small" data-ccol="${i}">🎨 색깔</button>
         <button class="btn small" data-up="${i}" ${i ? '' : 'disabled'}>▲</button><button class="btn small" data-down="${i}" ${i < ST.cats.length - 1 ? '' : 'disabled'}>▼</button>
         <button class="btn small" data-rn="${i}">이름</button><button class="btn small danger" data-del="${i}">지우기</button></div>`).join('')}
       <div class="acts"><button class="btn" id="addCat">＋ 분류 추가</button></div>
-      <p class="note">분류를 지우면 그 안의 앱은 첫 번째 분류로 옮겨져요. 분류 순서가 보기 화면 순서예요.</p></div>
+      <p class="note">분류를 지우면 그 안의 앱은 첫 번째 분류로 옮겨져요. 분류 순서가 보기 화면 순서예요.<br>🎨 분류 색깔은 그 분류의 모든 앱 카드에 칠해져요(앱에 따로 정한 색이 있으면 그 색이 먼저).</p></div>
     <div class="card"><h3>📱 앱 (눌러서 설명·분류·색깔 바꾸기)</h3>
       ${groups.map(([c, items]) => items.length ? `<div class="cat-h">${esc(c)}</div>` + items.map((a) => `<div class="row" data-edit="${a.id}" style="${a.color ? `--c:${a.color}` : ''}">
         ${iconHTML(a)}<span class="grow"><b>${esc(a.name)}</b><small>${esc(a.desc || (a.url ? '설명 없음' : '⚠️ 주소 필요'))}</small></span>
@@ -145,13 +147,14 @@ function settingsTab() {
   document.querySelectorAll('[data-up]').forEach((b) => { b.onclick = () => mv(+b.dataset.up, -1); });
   document.querySelectorAll('[data-down]').forEach((b) => { b.onclick = () => mv(+b.dataset.down, 1); });
   document.querySelectorAll('[data-rn]').forEach((b) => { b.onclick = () => catName(+b.dataset.rn); });
+  document.querySelectorAll('[data-ccol]').forEach((b) => { b.onclick = () => catColor(+b.dataset.ccol); });
   document.querySelectorAll('[data-del]').forEach((b) => { b.onclick = () => delCat(+b.dataset.del); });
   $('addCat').onclick = () => catName(-1);
   document.querySelectorAll('[data-edit]').forEach((r) => { r.onclick = () => editApp(r.dataset.edit); });
   $('exp').onclick = () => { copy(JSON.stringify(ST)); toast('설정을 복사했어요 — 다른 기기의 가져오기에 붙여 넣으세요'); };
   $('imp').onclick = () => openSheet('설정 가져오기', `<p class="note">다른 기기에서 ‘내보내기’로 복사한 글을 붙여 넣으세요.</p><textarea class="json" id="impT"></textarea><div class="acts"><button class="btn pri" id="impGo">가져오기</button></div>`, () => {
     $('impGo').onclick = () => {
-      try { const v = JSON.parse($('impT').value); if (!Array.isArray(v.cats) || typeof v.meta !== 'object') throw 0; ST = { cats: v.cats, order: v.order || {}, meta: v.meta }; save(); closeSheet(); render(); toast('가져왔어요'); }
+      try { const v = JSON.parse($('impT').value); if (!Array.isArray(v.cats) || typeof v.meta !== 'object') throw 0; ST = { cats: v.cats, order: v.order || {}, meta: v.meta, catColors: v.catColors || {} }; save(); closeSheet(); render(); toast('가져왔어요'); }
       catch { toast('형식이 맞지 않아요'); }
     };
   });
@@ -172,9 +175,24 @@ function catName(i) {
         for (const m of Object.values(ST.meta)) if (m.cat === cur) m.cat = v;
         for (const a of BASE) if (a.cat === cur && !ST.meta[a.id]?.cat) (ST.meta[a.id] ||= {}).cat = v; // 기본 분류였던 앱도 따라감
         if (ST.order[cur]) { ST.order[v] = ST.order[cur]; delete ST.order[cur]; }
+        if (ST.catColors[cur]) { ST.catColors[v] = ST.catColors[cur]; delete ST.catColors[cur]; }
       }
       save(); closeSheet(); render();
     };
+  });
+}
+function catColor(i) {
+  const c = ST.cats[i];
+  let color = ST.catColors[c] || '';
+  openSheet(`‘${c}’ 분류 색깔`, `<p class="note">이 분류의 모든 앱 카드에 칠해져요. 앱에 따로 정한 색이 있으면 그 색이 먼저예요.</p>
+    <div class="swatches" id="cCol"><button class="sw none${color ? '' : ' on'}" data-c="" aria-label="색 없음"></button>
+      ${COLORS.map((x) => `<button class="sw${color === x ? ' on' : ''}" data-c="${x}" style="background:${x}"></button>`).join('')}
+      <input type="color" id="cCustom" value="${color || '#4255d4'}" title="다른 색"></div>
+    <div class="acts"><button class="btn pri" id="cSave">저장</button></div>`, () => {
+    const pick = (x) => { color = x; document.querySelectorAll('#cCol .sw').forEach((b) => b.classList.toggle('on', b.dataset.c === x)); };
+    document.querySelectorAll('#cCol .sw').forEach((b) => { b.onclick = () => pick(b.dataset.c); });
+    $('cCustom').oninput = (e) => pick(e.target.value);
+    $('cSave').onclick = () => { if (color) ST.catColors[c] = color; else delete ST.catColors[c]; save(); closeSheet(); render(); toast(color ? '분류 색깔을 정했어요' : '분류 색깔을 지웠어요'); };
   });
 }
 function delCat(i) {
@@ -182,15 +200,15 @@ function delCat(i) {
   const c = ST.cats[i];
   ST.cats.splice(i, 1);
   for (const a of apps()) if (a.cat === c || (ST.meta[a.id]?.cat === c)) (ST.meta[a.id] ||= {}).cat = ST.cats[0];
-  delete ST.order[c]; save(); render(); toast(`‘${c}’ 분류를 지웠어요`);
+  delete ST.order[c]; delete ST.catColors[c]; save(); render(); toast(`‘${c}’ 분류를 지웠어요`);
 }
 function editApp(id) {
   const a = apps().find((x) => x.id === id);
-  let color = a.color;
+  let color = a.ownColor;
   openSheet(a.name, `
     <label class="f"><span>아이콘 아래 설명</span><input type="text" id="eDesc" maxlength="40" value="${esc(a.desc)}" placeholder="예: 우리 집 가계부"></label>
     <label class="f"><span>분류</span><select id="eCat">${ST.cats.map((c) => `<option ${c === a.cat ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></label>
-    <div class="f"><span>색깔</span><div class="swatches" id="eCol"><button class="sw none${color ? '' : ' on'}" data-c="" aria-label="색 없음"></button>
+    <div class="f"><span>색깔 (빗금 = 분류 색 따르기${ST.catColors[a.cat] ? '' : ', 지금 분류엔 색 없음'})</span><div class="swatches" id="eCol"><button class="sw none${color ? '' : ' on'}" data-c="" aria-label="분류 색 따르기"></button>
       ${COLORS.map((c) => `<button class="sw${color === c ? ' on' : ''}" data-c="${c}" style="background:${c}"></button>`).join('')}
       <input type="color" id="eCustom" value="${color || '#4255d4'}" title="다른 색"></div></div>
     <label class="f"><span>주소</span><input type="url" id="eUrl" value="${esc(a.url)}" placeholder="https://..."></label>

@@ -110,11 +110,20 @@ body[data-theme="a"] .band {
   background: linear-gradient(135deg, color-mix(in srgb, var(--b) 85%, #fff) 0%, var(--b) 45%, color-mix(in srgb, var(--b) 70%, #000) 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 0 rgba(0,0,0,.25), 0 8px 22px color-mix(in srgb, var(--b) 45%, transparent), 0 2px 0 rgba(0,0,0,.35);
 }
+body[data-theme="a"] .band { position: relative; overflow: hidden; }
+body[data-theme="a"] .band::before { content: ''; position: absolute; inset: 0 0 50% 0; background: linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.04)); pointer-events: none; }
+body[data-theme="a"] .band > * { position: relative; }
 body[data-theme="a"] .app, body[data-theme="a"] .slot {
   background: rgba(255,255,255,.05); border-radius: .9rem;
   box-shadow: inset 3px 3px 8px rgba(0,0,0,.55), inset -1px -1px 0 rgba(255,255,255,.08);
 }
-body[data-theme="a"] .app.tint, body[data-theme="a"] .slot.tint { background: color-mix(in srgb, var(--c) 20%, rgba(255,255,255,.03)); }
+/* 분류 색을 앱 칸에도 밤하늘 유리처럼: 위는 분류 색이 맑게, 아래로 갈수록 어둠에 스며듦 + 유리 윗면 반사 */
+body[data-theme="a"] .app.tint, body[data-theme="a"] .slot.tint {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 38%),
+    linear-gradient(160deg, color-mix(in srgb, var(--c) 46%, transparent) 0%, color-mix(in srgb, var(--c) 22%, transparent) 50%, color-mix(in srgb, var(--c) 6%, rgba(10,14,30,.6)) 100%);
+  box-shadow: inset 3px 3px 9px rgba(0,0,0,.5), inset -1px -1px 0 color-mix(in srgb, var(--c) 35%, transparent), inset 0 1px 0 rgba(255,255,255,.14);
+}
 body[data-theme="a"] .app .name { color: #e8ecff; }
 body[data-theme="a"] .app .desc { color: #9aa5d6; }
 body[data-theme="a"] .app img, body[data-theme="a"] .app .letter { box-shadow: 0 4px 12px rgba(0,0,0,.45); }

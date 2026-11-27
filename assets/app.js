@@ -54,8 +54,8 @@ async function copy(text) {
 }
 
 /* ───────────── 탭 ───────────── */
-// 디자인 시안: 주소에 ?theme=a 또는 ?theme=b 를 붙이면 그 모습으로(미리보기). 없으면 지금 모습.
-const THEME = (new URLSearchParams(location.search).get('theme') || '').toLowerCase();
+// 디자인: 기본은 시안 A(밤하늘 글래스, 2026-11-28 선택). ?theme=b 크림 · ?theme=classic 예전 밝은 모습 미리보기.
+const THEME = (new URLSearchParams(location.search).get('theme') || 'a').toLowerCase();
 if (['a', 'b'].includes(THEME)) document.body.dataset.theme = THEME;
 let tab = 'view';
 document.querySelectorAll('[data-tab]').forEach((b) => { b.onclick = () => { tab = b.dataset.tab; render(); }; });
